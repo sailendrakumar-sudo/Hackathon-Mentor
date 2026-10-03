@@ -2,7 +2,7 @@ import { useState, type FormEvent, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 import { Link, Route, Switch, useLocation, useRoute } from 'wouter';
 import {
-  Activity as ActivityIcon, ArrowLeft, ArrowRight, ArrowUpRight, Blocks,
+  Activity as ActivityIcon, ArrowLeft, ArrowRight, ArrowUpRight, Blocks, Copy,
   Check, CheckCircle2, Clock3, Code2, Compass, Cpu, FileText, Flag, FolderKanban,
   Gauge, Hammer, Lightbulb, ListChecks, LoaderCircle, Menu, MessageSquareText, MoreHorizontal,
   Plus, Presentation, Rocket, Settings2, ShieldAlert, Sparkles, Target, Trash2, X,
@@ -10,10 +10,10 @@ import {
 import {
   getGetDashboardQueryKey, getGetProjectQueryKey, getHealthCheckQueryKey, getListActivityQueryKey,
   getListProjectsQueryKey, getListTasksQueryKey, useCreateProject, useCreateTask, useDeleteProject,
-  useDeleteTask, useGetDashboard, useGetProject, useHealthCheck, useListActivity, useListProjects,
-  useListTasks, useUpdateProject, useUpdateTask,
+  useDeleteTask, useGenerateMentorResponse, useGetDashboard, useGetProject, useHealthCheck,
+  useListActivity, useListProjects, useListTasks, useUpdateProject, useUpdateTask,
 } from '@workspace/api-client-react';
-import type { Project, ProjectInput, Task, TaskInput } from '@workspace/api-client-react';
+import type { MentorRequestAction, MentorResult, Project, ProjectInput, Task, TaskInput } from '@workspace/api-client-react';
 import NotFound from '@/pages/not-found';
 
 const queryClient = new QueryClient();
@@ -25,6 +25,47 @@ const sections = [
   ['Judge Simulator', 'judge-simulator', Gauge], ['Evaluation', 'evaluation', Flag], ['Settings', 'settings', Settings2],
 ] as const;
 type SectionSlug = typeof sections[number][1];
+type CoachAction = { action: MentorRequestAction; title: string };
+
+const coachActions: Record<string, CoachAction[]> = {
+  problem: [{ action: 'problem_analysis', title: 'Analyze the problem' }],
+  ideas: [
+    { action: 'idea_generation', title: 'Generate directions' },
+    { action: 'idea_comparison', title: 'Compare ideas' },
+    { action: 'critical_feature_review', title: 'Review critical features' },
+  ],
+  mvp: [{ action: 'mvp_design', title: 'Shape the MVP' }],
+  'tech-stack': [{ action: 'tech_stack', title: 'Review the tech stack' }],
+  architecture: [
+    { action: 'architecture', title: 'Review architecture' },
+    { action: 'ai_architecture', title: 'Review AI architecture' },
+  ],
+  'build-plan': [{ action: 'build_plan', title: 'Plan the build' }],
+  'ai-lab': [
+    { action: 'coding_help', title: 'Get coding help' },
+    { action: 'debugging', title: 'Debug a problem' },
+    { action: 'ai_architecture', title: 'Review AI architecture' },
+    { action: 'critical_feature_review', title: 'Review critical features' },
+  ],
+  validation: [
+    { action: 'validation', title: 'Plan validation' },
+    { action: 'competitors', title: 'Map alternatives' },
+    { action: 'risk_analysis', title: 'Check project risks' },
+  ],
+  demo: [{ action: 'demo_strategy', title: 'Plan the demo' }],
+  pitch: [
+    { action: 'pitch_30', title: '30-second pitch' },
+    { action: 'pitch_60', title: '60-second pitch' },
+    { action: 'pitch_180', title: '3-minute pitch' },
+    { action: 'pitch_300', title: '5-minute pitch' },
+  ],
+  presentation: [{ action: 'presentation', title: 'Plan the presentation' }],
+  'judge-simulator': [
+    { action: 'judge_questions', title: 'Practice judge questions' },
+    { action: 'judge_feedback', title: 'Get judge-style feedback' },
+  ],
+  evaluation: [{ action: 'evaluation', title: 'Review the project' }],
+};
 
 function App() {
   return <QueryClientProvider client={queryClient}><Switch>
@@ -271,14 +312,19 @@ function WorkspacePage() {
       {tasksQuery.isError && <div className="inline-error" role="alert">Tasks did not load. <button onClick={() => tasksQuery.refetch()}>Retry</button></div>}
       {section === 'overview' && <Overview project={project} tasks={tasks} tasksLoading={tasksQuery.isLoading} updateProject={savePatch} updating={updateProject.isPending} onSection={slug => setLocation(`/projects/${id}/${slug}`)} />}
       {section === 'build-plan' && <BuildPlan project={project} tasks={tasks} loading={tasksQuery.isLoading} projectId={id} />}
-      {section === 'problem' && <EditableSection title="Name the real problem." label="Problem statement" value={project.problemStatement ?? ''} placeholder="Who is affected, what are they trying to do, and where does it break down?" onSave={value => savePatch({ problemStatement: value || null })} saving={updateProject.isPending} help="Keep it grounded in a person and a moment. Big themes can wait." />}
-      {section === 'ideas' && <EditableSection title="Capture the concept." label="Concept" value={project.concept ?? ''} placeholder="Describe the shape of the idea. Rough is useful." onSave={value => savePatch({ concept: value || null })} saving={updateProject.isPending} help="A promising idea is a hypothesis, not a commitment." />}
-      {section === 'mvp' && <MvpSection project={project} saving={updateProject.isPending} onSave={savePatch} />}
-      {section === 'tech-stack' && <EditableSection title="Choose tools you can ship with." label="Tech stack" value={(project.techStack ?? []).join('\n')} placeholder="One tool per line. Keep it familiar." onSave={value => savePatch({ techStack: splitLines(value) })} saving={updateProject.isPending} help={`Required: ${(project.requiredTechnologies ?? []).join(', ') || 'No required technologies listed'}`} />}
-      {section === 'architecture' && <EditableSection title="Make the shape visible." label="Architecture notes" value={project.architectureNotes ?? ''} placeholder="What talks to what? Where does data live? What can you cut?" onSave={value => savePatch({ architectureNotes: value || null })} saving={updateProject.isPending} help="A few clear notes beat a diagram nobody can explain." />}
-      {(section === 'demo' || section === 'pitch') && <EditableSection title={section === 'demo' ? 'Show the thing working.' : 'Make the case in one breath.'} label={section === 'demo' ? 'Demo plan' : 'Pitch notes'} value={section === 'demo' ? project.demoPlan ?? '' : project.pitch ?? ''} placeholder={section === 'demo' ? 'What will judges see first? What is the happy path? What can go wrong?' : 'Problem. Why now. What you built. What changes next.'} onSave={value => savePatch(section === 'demo' ? { demoPlan: value || null } : { pitch: value || null })} saving={updateProject.isPending} help="Keep the story concrete. Show a working slice before a slide." />}
+      {section === 'problem' && <EditableSection title="Name the real problem." label="Problem statement" value={project.problemStatement ?? ''} placeholder="Who is affected, what are they trying to do, and where does it break down?" onSave={value => savePatch({ problemStatement: value || null })} saving={updateProject.isPending} help="Keep it grounded in a person and a moment. Big themes can wait." coach={<CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions.problem} />} />}
+      {section === 'ideas' && <EditableSection title="Capture the concept." label="Concept" value={project.concept ?? ''} placeholder="Describe the shape of the idea. Rough is useful." onSave={value => savePatch({ concept: value || null })} saving={updateProject.isPending} help="A promising idea is a hypothesis, not a commitment." coach={<CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions.ideas} />} />}
+      {section === 'mvp' && <MvpSection project={project} saving={updateProject.isPending} onSave={savePatch} coach={<CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions.mvp} />} />}
+      {section === 'tech-stack' && <EditableSection title="Choose tools you can ship with." label="Tech stack" value={(project.techStack ?? []).join('\n')} placeholder="One tool per line. Keep it familiar." onSave={value => savePatch({ techStack: splitLines(value) })} saving={updateProject.isPending} help={`Required: ${(project.requiredTechnologies ?? []).join(', ') || 'No required technologies listed'}`} coach={<CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions['tech-stack']} />} />}
+      {section === 'architecture' && <EditableSection title="Make the shape visible." label="Architecture notes" value={project.architectureNotes ?? ''} placeholder="What talks to what? Where does data live? What can you cut?" onSave={value => savePatch({ architectureNotes: value || null })} saving={updateProject.isPending} help="A few clear notes beat a diagram nobody can explain." coach={<CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions.architecture} />} />}
+      {(section === 'demo' || section === 'pitch') && <EditableSection title={section === 'demo' ? 'Show the thing working.' : 'Make the case in one breath.'} label={section === 'demo' ? 'Demo plan' : 'Pitch notes'} value={section === 'demo' ? project.demoPlan ?? '' : project.pitch ?? ''} placeholder={section === 'demo' ? 'What will judges see first? What is the happy path? What can go wrong?' : 'Problem. Why now. What you built. What changes next.'} onSave={value => savePatch(section === 'demo' ? { demoPlan: value || null } : { pitch: value || null })} saving={updateProject.isPending} help="Keep the story concrete. Show a working slice before a slide." coach={<CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions[section]} />} />}
+      {section === 'ai-lab' && <CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions['ai-lab']} showSavedNotes />}
+      {section === 'validation' && <CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions.validation} />}
+      {section === 'presentation' && <CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions.presentation} />}
+      {section === 'judge-simulator' && <CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions['judge-simulator']} />}
+      {section === 'evaluation' && <CoachPanel projectId={id} projectNotes={project.coachNotes} actions={coachActions.evaluation} />}
       {section === 'settings' && <SettingsSection project={project} saving={updateProject.isPending} onSave={savePatch} onDelete={() => { if (window.confirm(`Delete “${project.name}” and all its tasks?`)) deleteProject.mutate({ id }, { onSuccess: () => { invalidate(); setLocation('/'); } }); }} deleting={deleteProject.isPending} />}
-      {!['overview', 'build-plan', 'problem', 'ideas', 'mvp', 'tech-stack', 'architecture', 'demo', 'pitch', 'settings'].includes(section) && <UnavailableSection name={sections.find(([, slug]) => slug === section)?.[0] ?? 'This section'} />}
+      {!['overview', 'build-plan', 'problem', 'ideas', 'mvp', 'tech-stack', 'architecture', 'demo', 'pitch', 'ai-lab', 'validation', 'presentation', 'judge-simulator', 'evaluation', 'settings'].includes(section) && <UnavailableSection name={sections.find(([, slug]) => slug === section)?.[0] ?? 'This section'} />}
     </div>
   </div></AppFrame>;
 }
@@ -358,6 +404,7 @@ function BuildPlan({ project, tasks, loading, projectId }: { project: Project; t
       <div className="task-form-actions"><button type="button" className="button button-quiet button-small" onClick={() => setShowForm(false)}>Cancel</button><button className="button button-accent button-small" disabled={createTask.isPending}>{createTask.isPending ? 'Adding…' : 'Add to plan'}<ArrowRight size={14} /></button></div>
     </form>}
     {loading ? <div className="task-board task-board-loading"><SkeletonCard /><SkeletonCard /></div> : tasks.length ? <div className="task-board">{groups.map(group => <section className={`task-column column-${group.key}`} key={group.key}><div className="column-head"><span className="column-status-dot"></span><h3>{group.title}</h3><span className="column-count">{group.list.length}</span><small>{group.hint}</small></div><div className="column-tasks">{group.list.map(task => <TaskCard key={task.id} task={task} onStatus={() => changeStatus(task)} onDelete={() => removeTask(task)} busy={updateTask.isPending || deleteTask.isPending} />)}</div></section>)}</div> : <div className="empty-task-plan"><div className="empty-graphic"><ListChecks size={26} /></div><h3>Nothing on the board. Good time to scope.</h3><p>Start with the one thing that must work for your demo. Add the next step, not the whole roadmap.</p><button className="button button-accent" onClick={() => setShowForm(true)}><Plus size={15} /> Add your first task</button></div>}
+    <CoachPanel projectId={projectId} projectNotes={project.coachNotes} actions={coachActions['build-plan']} />
     <div className="plan-footnote"><span><Clock3 size={14} /></span><p><b>Deadline reality check</b> — leave room for integration, testing, and a demo that survives the room you present in.</p></div>
   </div>;
 }
@@ -373,7 +420,7 @@ function TaskCard({ task, onStatus, onDelete, busy }: { task: Task; onStatus: ()
   </article>;
 }
 
-function MvpSection({ project, saving, onSave }: { project: Project; saving: boolean; onSave: (patch: Record<string, unknown>) => void }) {
+function MvpSection({ project, saving, onSave, coach }: { project: Project; saving: boolean; onSave: (patch: Record<string, unknown>) => void; coach: ReactNode }) {
   const [solution, setSolution] = useState(project.selectedSolution ?? '');
   const [features, setFeatures] = useState((project.mvpFeatures ?? []).join('\n'));
   const changed = solution !== (project.selectedSolution ?? '') || features !== (project.mvpFeatures ?? []).join('\n');
@@ -382,18 +429,131 @@ function MvpSection({ project, saving, onSave }: { project: Project; saving: boo
       <Field label="Selected solution"><textarea rows={4} value={solution} onChange={e => setSolution(e.target.value)} placeholder="What is the smallest version of your idea that demonstrates real value?" data-testid="input-selected-solution" /></Field>
       <div className="feature-editor"><Field label="MVP features" hint="One feature per line"><textarea rows={7} value={features} onChange={e => setFeatures(e.target.value)} placeholder={'A person can...\nThe system responds by...\nThe demo ends with...'} data-testid="input-mvp-features" /></Field><div className="feature-counter"><span>{splitLines(features).length}</span> scoped items <span className="feature-counter-note">Keep it to three if you can.</span></div></div>
       <div className="editor-actions">{saving && <span className="saving-state"><LoaderCircle className="spin" size={14} /> Saving…</span>}<button className="button button-accent button-small" disabled={!changed || saving} onClick={() => onSave({ selectedSolution: solution || null, mvpFeatures: splitLines(features) })}>{saving ? 'Saving…' : 'Save MVP scope'}<ArrowRight size={14} /></button></div>
-    </div>
+    </div>{coach}
   </div>;
 }
 
-function EditableSection({ title, label, value, placeholder, onSave, saving, help }: { title: string; label: string; value: string; placeholder: string; onSave: (value: string) => void; saving: boolean; help: string }) {
+function EditableSection({ title, label, value, placeholder, onSave, saving, help, coach }: { title: string; label: string; value: string; placeholder: string; onSave: (value: string) => void; saving: boolean; help: string; coach: ReactNode }) {
   const [draft, setDraft] = useState(value);
   const changed = draft !== value;
   return <div className="editable-section"><div className="content-heading"><div><div className="eyebrow"><span className="eyebrow-line"></span> CLEAR THINKING, BETTER BUILDING</div><h2>{title}</h2><p>{help}</p></div></div>
     <div className="editor-card"><Field label={label}><textarea rows={9} value={draft} onChange={e => setDraft(e.target.value)} placeholder={placeholder} data-testid={`input-${label.toLowerCase().replaceAll(' ', '-')}`} /></Field>
       <div className="editor-actions">{saving && <span className="saving-state"><LoaderCircle className="spin" size={14} /> Saving…</span>}<button className="button button-accent button-small" disabled={!changed || saving} onClick={() => onSave(draft)}>{saving ? 'Saving…' : 'Save changes'}<ArrowRight size={14} /></button></div>
-    </div>
+    </div>{coach}
   </div>;
+}
+
+type SavedCoachNote = { id: string; title: string; action: string; answer: string; generatedAt: string };
+
+function parseCoachNote(raw: string, index: number): SavedCoachNote | null {
+  try {
+    const value: unknown = JSON.parse(raw);
+    if (value && typeof value === 'object') {
+      const note = value as Partial<SavedCoachNote>;
+      if (typeof note.id === 'string' && typeof note.title === 'string' && typeof note.action === 'string' &&
+        typeof note.answer === 'string' && typeof note.generatedAt === 'string') {
+        return { id: note.id, title: note.title, action: note.action, answer: note.answer, generatedAt: note.generatedAt };
+      }
+    }
+  } catch {
+    // Older plain-text notes remain readable and removable.
+  }
+  return raw.trim() ? { id: `legacy-${index}`, title: 'Older mentor note', action: 'legacy', answer: raw, generatedAt: '' } : null;
+}
+
+function CoachPanel({ projectId, projectNotes, actions, showSavedNotes = false }: { projectId: string; projectNotes?: string[]; actions: CoachAction[]; showSavedNotes?: boolean }) {
+  const queryClient = useQueryClient();
+  const generate = useGenerateMentorResponse();
+  const updateProject = useUpdateProject();
+  const [selectedAction, setSelectedAction] = useState<MentorRequestAction>(actions[0].action);
+  const [context, setContext] = useState('');
+  const [result, setResult] = useState<MentorResult | null>(null);
+  const [error, setError] = useState('');
+  const [copyMessage, setCopyMessage] = useState('');
+  const [saveMessage, setSaveMessage] = useState('');
+  const notes = (projectNotes ?? []).map((raw, rawIndex) => ({ note: parseCoachNote(raw, rawIndex), rawIndex }))
+    .filter((entry): entry is { note: SavedCoachNote; rawIndex: number } => entry.note !== null);
+  const activeAction = actions.find(item => item.action === selectedAction) ?? actions[0];
+  const pending = generate.isPending;
+
+  const runCoach = (event: FormEvent) => {
+    event.preventDefault();
+    setError('');
+    setCopyMessage('');
+    setSaveMessage('');
+    setResult(null);
+    generate.mutate({ data: { projectId, action: activeAction.action, ...(context.trim() ? { prompt: context.trim() } : {}) } }, {
+      onSuccess: answer => setResult(answer),
+      onError: error => setError(error instanceof Error ? error.message : 'The mentor could not generate a response. Check your connection or try again shortly.'),
+    });
+  };
+  const copyAnswer = async () => {
+    if (!result) return;
+    try {
+      await navigator.clipboard.writeText(result.answer);
+      setCopyMessage('Answer copied.');
+    } catch {
+      setCopyMessage('Copy is unavailable in this browser. Select the answer text to copy it.');
+    }
+  };
+  const saveAnswer = () => {
+    if (!result) return;
+    if ((projectNotes ?? []).length >= 100) {
+      setError('Mentor notes are full. Remove one in AI Lab before saving another.');
+      return;
+    }
+    setSaveMessage('');
+    setError('');
+    const title = actions.find(item => item.action === result.action)?.title ?? activeAction.title;
+    const id = typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const note: SavedCoachNote = { id, title, action: result.action, answer: result.answer, generatedAt: result.generatedAt };
+    updateProject.mutate({ id: projectId, data: { coachNotes: [...(projectNotes ?? []), JSON.stringify(note)] } }, {
+      onSuccess: () => {
+        setSaveMessage('Saved to mentor notes.');
+        queryClient.invalidateQueries({ queryKey: getGetProjectQueryKey(projectId) });
+      },
+      onError: () => setError('This answer could not be saved to mentor notes. Try again.'),
+    });
+  };
+  const removeNote = (noteIndex: number) => {
+    const note = notes.find(entry => entry.rawIndex === noteIndex)?.note;
+    if (!window.confirm(`Remove “${note?.title ?? 'this mentor note'}” from saved notes? This cannot be undone.`)) return;
+    const updatedNotes = (projectNotes ?? []).filter((_, index) => index !== noteIndex);
+    updateProject.mutate({ id: projectId, data: { coachNotes: updatedNotes } }, {
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: getGetProjectQueryKey(projectId) }),
+      onError: () => setError('That mentor note could not be removed. Try again.'),
+    });
+  };
+
+  return <section className="coach-panel" aria-labelledby="coach-panel-title">
+    <div className="coach-heading"><div><div className="eyebrow"><span className="eyebrow-line"></span> PRACTICAL AI COACHING</div><h2 id="coach-panel-title">Ask your build mentor</h2><p>Get a focused next step. Treat the response as advice to evaluate, not a decision made for your team.</p></div><div className="coach-mark"><Sparkles size={17} /><span>MENTOR</span></div></div>
+    <form className="coach-form" onSubmit={runCoach}>
+      <fieldset className="coach-action-fieldset"><legend>What do you want help with?</legend><div className="coach-action-list">
+        {actions.map(item => <button key={item.action} type="button" className={`coach-action ${item.action === activeAction.action ? 'coach-action-active' : ''}`} aria-pressed={item.action === activeAction.action} onClick={() => { setSelectedAction(item.action); setResult(null); setError(''); setSaveMessage(''); }} data-testid={`button-coach-action-${item.action}`}>{item.title}<ArrowRight size={13} /></button>)}
+      </div></fieldset>
+      <label className="coach-context-label" htmlFor={`coach-context-${projectId}-${activeAction.action}`}>{activeAction.action === 'judge_feedback' ? 'Judge question and your draft answer' : 'Optional context'} <span>{activeAction.action === 'judge_feedback' ? 'Paste a question and the answer you would give.' : 'Share a specific question, constraint, or error message.'}</span></label>
+      <textarea id={`coach-context-${projectId}-${activeAction.action}`} className="coach-context" rows={3} maxLength={4000} value={context} onChange={event => setContext(event.target.value)} placeholder={activeAction.action === 'judge_feedback' ? 'Judge question: …\nMy draft answer: …' : 'What have you tried? What is the deadline or constraint?'} data-testid={`input-coach-context-${activeAction.action}`} />
+      <div className="coach-privacy" role="note" data-testid="text-coach-privacy-warning"><ShieldAlert size={16} /><p>Project context and your prompt are sent to OpenAI using the owner’s key. OpenAI may charge for usage, and the server has usage limits. Never enter API keys, passwords, or sensitive personal data.</p></div>
+      <div className="coach-submit-row"><span>Advice is AI-generated, not verified research or objective judging.</span><button className="button button-accent button-small" type="submit" disabled={pending} data-testid={`button-generate-${activeAction.action}`}>{pending ? <><LoaderCircle className="spin" size={15} /> Thinking…</> : <><Sparkles size={14} /> {activeAction.title}</>}</button></div>
+    </form>
+    {pending && <div className="coach-pending" role="status" aria-live="polite" data-testid="status-coach-pending"><span className="coach-pending-mark"><LoaderCircle className="spin" size={16} /></span><div><b>Working through your project context</b><p>This can take a few seconds. Your project fields will not be changed.</p></div></div>}
+    {error && <div className="coach-error" role="alert" data-testid="status-coach-error">{error}</div>}
+    {result && <article className="coach-result" aria-label="AI-generated mentor advice" data-testid="result-coach-answer">
+      <div className="coach-result-head"><div><span className="coach-result-label"><Sparkles size={13} /> AI-GENERATED ADVICE</span><h3>{actions.find(item => item.action === result.action)?.title ?? activeAction.title}</h3></div><span className="coach-model">{result.model}</span></div>
+      <div className="coach-answer">{result.answer}</div>
+      <p className="coach-result-caveat" data-testid="text-coach-result-caveat">Advice only. This is not verified research or an objective assessment.</p>
+      <div className="coach-result-actions"><span>{Number.isNaN(Date.parse(result.generatedAt)) ? 'Just generated' : new Date(result.generatedAt).toLocaleString()}</span><div><button type="button" className="button button-outline button-small" onClick={copyAnswer} data-testid="button-copy-coach-answer"><Copy size={13} /> Copy answer</button>{(projectNotes ?? []).length >= 100 ? <span className="coach-action-status" role="status" data-testid="status-coach-notes-limit">Mentor notes are full. Remove one in AI Lab to save another.</span> : <button type="button" className="button button-dark button-small" onClick={saveAnswer} disabled={updateProject.isPending} data-testid="button-save-coach-note">{updateProject.isPending ? 'Saving…' : 'Save to mentor notes'}</button>}</div></div>
+      {copyMessage && <p className="coach-action-status" role="status" data-testid="status-coach-copy">{copyMessage}</p>}
+      {saveMessage && <p className="coach-action-status" role="status" data-testid="status-coach-save">{saveMessage}</p>}
+    </article>}
+    {showSavedNotes && <section className="saved-coach-notes" aria-labelledby="saved-coach-notes-title">
+      <div className="saved-notes-heading"><div><div className="eyebrow"><span className="eyebrow-line"></span> KEEP THE USEFUL BITS</div><h3 id="saved-coach-notes-title">Mentor notes <span>{notes.length}</span></h3></div><p>Only answers you chose to save appear here.</p></div>
+      {notes.length ? <div className="saved-note-list">{notes.map(({ note, rawIndex }) => <article className="saved-note" key={`${note.id}-${rawIndex}`} data-testid={`card-coach-note-${note.id}`}>
+        <div className="saved-note-top"><div><b>{note.title}</b><span>{note.generatedAt && !Number.isNaN(Date.parse(note.generatedAt)) ? new Date(note.generatedAt).toLocaleString() : 'Saved mentor advice'}</span></div><button type="button" className="button button-quiet button-small" onClick={() => removeNote(rawIndex)} disabled={updateProject.isPending} aria-label={`Remove mentor note: ${note.title}`} data-testid={`button-remove-coach-note-${note.id}`}><Trash2 size={13} /> Remove</button></div>
+        <div className="saved-note-answer">{note.answer}</div>
+      </article>)}</div> : <div className="saved-notes-empty" data-testid="empty-coach-notes">No mentor notes saved yet. Generate an answer and choose “Save to mentor notes” to keep it.</div>}
+    </section>}
+  </section>;
 }
 
 function SettingsSection({ project, saving, onSave, onDelete, deleting }: { project: Project; saving: boolean; onSave: (patch: Record<string, unknown>) => void; onDelete: () => void; deleting: boolean }) {

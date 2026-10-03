@@ -16,6 +16,8 @@ tags:
     description: Build plan tasks
   - name: dashboard
     description: Dashboard summaries and project activity
+  - name: mentor
+    description: Project-context AI coaching
 paths:
   /healthz:
     get:
@@ -65,6 +67,34 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Activity"
+  /mentor/generate:
+    post:
+      operationId: generateMentorResponse
+      tags: [mentor]
+      summary: Generate deadline-aware project mentoring
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MentorRequest"
+      responses:
+        "200":
+          description: Generated mentoring response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MentorResult"
+        "400":
+          description: Invalid request
+        "429":
+          description: AI provider rate limit reached
+        "503":
+          description: AI service is unavailable
+        "404":
+          description: Project not found
+        "502":
+          description: AI provider request failed
   /projects:
     get:
       operationId: listProjects
@@ -250,6 +280,7 @@ components:
         - mvpFeatures
         - techStack
         - stage
+        - coachNotes
         - createdAt
         - updatedAt
       properties:
@@ -283,6 +314,7 @@ components:
         stage:
           type: string
           enum: [problem, ideas, mvp, build, test, deploy, demo, pitch]
+        coachNotes: { type: array, items: { type: string } }
         createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
     ProjectInput:
@@ -338,6 +370,7 @@ components:
         architectureNotes: { type: ["string", "null"], maxLength: 10000 }
         demoPlan: { type: ["string", "null"], maxLength: 5000 }
         pitch: { type: ["string", "null"], maxLength: 10000 }
+        coachNotes: { type: array, items: { type: string }, maxItems: 100 }
         stage:
           type: string
           enum: [problem, ideas, mvp, build, test, deploy, demo, pitch]
@@ -411,3 +444,43 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Activity"
+    MentorRequest:
+      type: object
+      required: [projectId, action]
+      properties:
+        projectId: { type: string, format: uuid }
+        action:
+          type: string
+          enum:
+            - problem_analysis
+            - idea_generation
+            - idea_comparison
+            - mvp_design
+            - tech_stack
+            - architecture
+            - build_plan
+            - ai_architecture
+            - validation
+            - competitors
+            - risk_analysis
+            - coding_help
+            - debugging
+            - demo_strategy
+            - pitch_30
+            - pitch_60
+            - pitch_180
+            - pitch_300
+            - presentation
+            - judge_questions
+            - judge_feedback
+            - evaluation
+            - critical_feature_review
+        prompt: { type: string, maxLength: 4000 }
+    MentorResult:
+      type: object
+      required: [action, answer, model, generatedAt]
+      properties:
+        action: { type: string }
+        answer: { type: string }
+        model: { type: string }
+        generatedAt: { type: string, format: date-time }

@@ -66,6 +66,7 @@ export const GetDashboardResponse = zod.object({
   "demoPlan": zod.string().nullish(),
   "pitch": zod.string().nullish(),
   "stage": zod.enum(['problem', 'ideas', 'mvp', 'build', 'test', 'deploy', 'demo', 'pitch']),
+  "coachNotes": zod.array(zod.string()),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })),
@@ -106,6 +107,27 @@ export const ListActivityResponse = zod.array(ListActivityResponseItem)
 
 
 /**
+ * @summary Generate deadline-aware project mentoring
+ */
+export const generateMentorResponseBodyPromptMax = 4000;
+
+
+
+export const GenerateMentorResponseBody = zod.object({
+  "projectId": zod.string().uuid(),
+  "action": zod.enum(['problem_analysis', 'idea_generation', 'idea_comparison', 'mvp_design', 'tech_stack', 'architecture', 'build_plan', 'ai_architecture', 'validation', 'competitors', 'risk_analysis', 'coding_help', 'debugging', 'demo_strategy', 'pitch_30', 'pitch_60', 'pitch_180', 'pitch_300', 'presentation', 'judge_questions', 'judge_feedback', 'evaluation', 'critical_feature_review']),
+  "prompt": zod.string().max(generateMentorResponseBodyPromptMax).optional()
+})
+
+export const GenerateMentorResponseResponse = zod.object({
+  "action": zod.string(),
+  "answer": zod.string(),
+  "model": zod.string(),
+  "generatedAt": zod.coerce.date()
+})
+
+
+/**
  * @summary List hackathon projects
  */
 export const listProjectsResponseTeamSizeMax = 20;
@@ -143,6 +165,7 @@ export const ListProjectsResponseItem = zod.object({
   "demoPlan": zod.string().nullish(),
   "pitch": zod.string().nullish(),
   "stage": zod.enum(['problem', 'ideas', 'mvp', 'build', 'test', 'deploy', 'demo', 'pitch']),
+  "coachNotes": zod.array(zod.string()),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })
@@ -244,6 +267,7 @@ export const CreateProjectResponse = zod.object({
   "demoPlan": zod.string().nullish(),
   "pitch": zod.string().nullish(),
   "stage": zod.enum(['problem', 'ideas', 'mvp', 'build', 'test', 'deploy', 'demo', 'pitch']),
+  "coachNotes": zod.array(zod.string()),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })
@@ -291,6 +315,7 @@ export const GetProjectResponse = zod.object({
   "demoPlan": zod.string().nullish(),
   "pitch": zod.string().nullish(),
   "stage": zod.enum(['problem', 'ideas', 'mvp', 'build', 'test', 'deploy', 'demo', 'pitch']),
+  "coachNotes": zod.array(zod.string()),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })
@@ -341,6 +366,8 @@ export const updateProjectBodyDemoPlanMax = 5000;
 
 export const updateProjectBodyPitchMax = 10000;
 
+export const updateProjectBodyCoachNotesMax = 100;
+
 
 
 export const UpdateProjectBody = zod.object({
@@ -370,6 +397,7 @@ export const UpdateProjectBody = zod.object({
   "architectureNotes": zod.string().max(updateProjectBodyArchitectureNotesMax).nullish(),
   "demoPlan": zod.string().max(updateProjectBodyDemoPlanMax).nullish(),
   "pitch": zod.string().max(updateProjectBodyPitchMax).nullish(),
+  "coachNotes": zod.array(zod.string()).max(updateProjectBodyCoachNotesMax).optional(),
   "stage": zod.enum(['problem', 'ideas', 'mvp', 'build', 'test', 'deploy', 'demo', 'pitch']).optional()
 })
 
@@ -408,6 +436,7 @@ export const UpdateProjectResponse = zod.object({
   "demoPlan": zod.string().nullish(),
   "pitch": zod.string().nullish(),
   "stage": zod.enum(['problem', 'ideas', 'mvp', 'build', 'test', 'deploy', 'demo', 'pitch']),
+  "coachNotes": zod.array(zod.string()),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })

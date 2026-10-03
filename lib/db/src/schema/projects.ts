@@ -30,6 +30,7 @@ export const projectsTable = pgTable("hackathon_projects", {
   architectureNotes: text("architecture_notes"),
   demoPlan: text("demo_plan"),
   pitch: text("pitch"),
+  coachNotes: text("coach_notes").array().notNull().default([]),
   stage: text("stage").notNull().default("problem"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),

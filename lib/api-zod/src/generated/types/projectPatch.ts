@@ -94,5 +94,7 @@ export interface ProjectPatch {
      * @nullable
      */
   pitch?: string | null;
+  /** @maxItems 100 */
+  coachNotes?: string[];
   stage?: ProjectPatchStage;
 }

@@ -71,6 +71,7 @@ export interface Project {
   /** @nullable */
   pitch?: string | null;
   stage: ProjectStage;
+  coachNotes: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -241,6 +242,8 @@ export interface ProjectPatch {
      * @nullable
      */
   pitch?: string | null;
+  /** @maxItems 100 */
+  coachNotes?: string[];
   stage?: ProjectPatchStage;
 }
 
@@ -396,6 +399,49 @@ export interface DashboardSummary {
   upcomingDeadlines: DashboardSummaryUpcomingDeadlinesItem[];
   recentProjects: Project[];
   recentActivity: Activity[];
+}
+
+export type MentorRequestAction = typeof MentorRequestAction[keyof typeof MentorRequestAction];
+
+
+export const MentorRequestAction = {
+  problem_analysis: 'problem_analysis',
+  idea_generation: 'idea_generation',
+  idea_comparison: 'idea_comparison',
+  mvp_design: 'mvp_design',
+  tech_stack: 'tech_stack',
+  architecture: 'architecture',
+  build_plan: 'build_plan',
+  ai_architecture: 'ai_architecture',
+  validation: 'validation',
+  competitors: 'competitors',
+  risk_analysis: 'risk_analysis',
+  coding_help: 'coding_help',
+  debugging: 'debugging',
+  demo_strategy: 'demo_strategy',
+  pitch_30: 'pitch_30',
+  pitch_60: 'pitch_60',
+  pitch_180: 'pitch_180',
+  pitch_300: 'pitch_300',
+  presentation: 'presentation',
+  judge_questions: 'judge_questions',
+  judge_feedback: 'judge_feedback',
+  evaluation: 'evaluation',
+  critical_feature_review: 'critical_feature_review',
+} as const;
+
+export interface MentorRequest {
+  projectId: string;
+  action: MentorRequestAction;
+  /** @maxLength 4000 */
+  prompt?: string;
+}
+
+export interface MentorResult {
+  action: string;
+  answer: string;
+  model: string;
+  generatedAt: string;
 }
 
 export type ListActivityParams = {

@@ -55,6 +55,7 @@ export interface Project {
   /** @nullable */
   pitch?: string | null;
   stage: ProjectStage;
+  coachNotes: string[];
   createdAt: Date;
   updatedAt: Date;
 }
