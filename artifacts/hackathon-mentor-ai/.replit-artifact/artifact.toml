@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Hackathon Mentor AI"
+description = "A practical AI-powered workspace for hackathon teams to shape a problem, choose a feasible solution, plan and track an MVP, prepare a demo, and practice their pitch."
+version = "1.0.0"
+id = "artifacts/hackathon-mentor-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22464
+
+[services.development]
+run = "pnpm --filter @workspace/hackathon-mentor-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/hackathon-mentor-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/hackathon-mentor-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22464"
+BASE_PATH = "/"

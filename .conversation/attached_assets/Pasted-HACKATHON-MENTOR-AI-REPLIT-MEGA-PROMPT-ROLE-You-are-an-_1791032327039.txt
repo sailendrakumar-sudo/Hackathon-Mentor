@@ -1,0 +1,1514 @@
+HACKATHON MENTOR AI — REPLIT MEGA PROMPT
+
+ROLE
+
+You are an expert AI Hackathon Mentor, Product Strategist, Technical Architect, Full-Stack Engineer, AI Engineer, UI/UX Designer, Startup Advisor, and Hackathon Judge.
+
+Build a complete, modern, production-quality web application called:
+
+HACKATHON MENTOR AI
+
+The application helps students transform a hackathon idea into a validated problem, differentiated solution, working MVP, technical architecture, implementation plan, polished demo, presentation, and pitch.
+
+The product workflow is:
+
+IDEA → PROBLEM ANALYSIS → SOLUTION → MVP → TECH STACK → ARCHITECTURE → BUILD PLAN → TESTING → DEPLOYMENT → DEMO → PITCH → JUDGE SIMULATION → OPTIMIZATION
+
+
+1. PRIMARY OBJECTIVE
+
+Build a functional web application where a student can:
+
+1. Create a hackathon project.
+2. Enter hackathon details.
+3. Enter or generate a problem statement.
+4. Analyze the problem.
+5. Generate multiple solution ideas.
+6. Compare solution ideas.
+7. Select a solution.
+8. Define the MVP.
+9. Generate a technical architecture.
+10. Select an appropriate technology stack.
+11. Generate an implementation plan.
+12. Track development progress.
+13. Get AI coding assistance.
+14. Validate the idea.
+15. Analyze competitors.
+16. Identify risks.
+17. Generate a demo strategy.
+18. Generate pitches of different lengths.
+19. Generate presentation content.
+20. Simulate difficult judge questions.
+21. Evaluate the final project.
+22. Track remaining hackathon time.
+23. Adapt recommendations based on the deadline.
+
+
+2. TARGET USERS
+
+Primary users:
+
+- College students
+- Hackathon participants
+- Beginner developers
+- Student startup teams
+- AI/ML students
+- Web development students
+- Technical team members
+- Hackathon mentors
+
+Assume many users have:
+
+- Limited coding experience
+- Limited time
+- Limited budget
+- Limited access to paid APIs
+- Limited understanding of system architecture
+
+Prioritize:
+
+SPEED + FEASIBILITY + IMPACT + INNOVATION + DEMO QUALITY + TECHNICAL EXECUTION
+
+
+3. CORE PRODUCT PRINCIPLE
+
+Do NOT blindly agree with the user.
+
+If an idea is:
+
+- Too generic
+- Unrealistic
+- Too difficult
+- Too expensive
+- Too time-consuming
+- Technically unnecessary
+- Poorly differentiated
+
+Explain the problem clearly and suggest a practical improvement.
+
+Act as a critical thinking partner.
+
+Do not optimize for making the user feel good.
+
+Optimize for making the project better.
+
+
+4. APPLICATION STRUCTURE
+
+Create these main sections:
+
+- Dashboard
+- Problem
+- Ideas
+- MVP
+- Tech Stack
+- Architecture
+- Build Plan
+- AI Lab
+- Validation
+- Demo
+- Pitch
+- Presentation
+- Judge Simulator
+- Evaluation
+- Settings
+
+
+5. DASHBOARD
+
+Show:
+
+- Active projects
+- Recent projects
+- Hackathon countdown
+- Current project progress
+- MVP completion
+- Current phase
+- Important warnings
+- Next recommended action
+
+Dashboard cards:
+
+- Project Status
+- Time Remaining
+- MVP Progress
+- Innovation
+- Technical Progress
+- Demo Readiness
+
+Use visual progress indicators.
+
+
+6. PROJECT CREATION
+
+Create a project onboarding wizard.
+
+Collect:
+
+- Hackathon name
+- Theme
+- Problem statement
+- Judging criteria
+- Start date
+- End date
+- Total duration
+- Team size
+- Team members
+- Required technologies
+- Technology restrictions
+- Hardware allowed?
+- APIs allowed?
+- AI encouraged?
+- Prototype required?
+- Deployment required?
+- Budget
+- Additional rules
+
+Optional fields should be skippable.
+
+Do not ask unnecessary questions.
+
+
+7. PROJECT WORKSPACE
+
+After project creation, open a dedicated workspace.
+
+Navigation should include:
+
+Overview
+Problem
+Ideas
+MVP
+Tech Stack
+Architecture
+Build Plan
+AI Lab
+Validation
+Demo
+Pitch
+Presentation
+Judge Simulator
+Evaluation
+Settings
+
+Use a persistent sidebar on desktop.
+
+Use responsive navigation on mobile.
+
+
+8. PROJECT OVERVIEW
+
+Display:
+
+- Project Name
+- One-line Concept
+- Problem
+- Target Users
+- Current Stage
+- Progress
+- Deadline
+- Recommended Next Step
+
+Create a visual workflow:
+
+Problem
+↓
+Idea
+↓
+MVP
+↓
+Build
+↓
+Test
+↓
+Deploy
+↓
+Demo
+↓
+Pitch
+
+Highlight the current stage.
+
+
+9. PROBLEM ANALYSIS
+
+Create an AI-powered problem analysis module.
+
+Generate:
+
+ACTUAL PROBLEM
+
+What is actually being solved?
+
+TARGET USERS
+
+Who experiences the problem?
+
+IMPORTANCE
+
+Why does it matter?
+
+ROOT CAUSES
+
+What causes the problem?
+
+CURRENT BEHAVIOR
+
+What do people currently do?
+
+EXISTING SOLUTION GAPS
+
+Why are current solutions insufficient?
+
+PAIN POINTS
+
+Identify major pain points.
+
+OPPORTUNITY AREAS
+
+Identify:
+
+- Automation opportunities
+- AI opportunities
+- Data opportunities
+- Scalability opportunities
+- Accessibility opportunities
+- Sustainability opportunities
+
+CRITICAL QUESTION:
+
+"Is this actually worth solving in a hackathon?"
+
+If not, explain why and suggest a better direction.
+
+
+10. IDEA GENERATOR
+
+Create an AI-powered idea generation module.
+
+Generate multiple concepts using:
+
+PROBLEM + INNOVATION + TECHNOLOGY + IMPACT + DEMONSTRABILITY
+
+For every idea provide:
+
+- Name
+- One-line concept
+- Problem solved
+- Target users
+- Unique innovation
+- Core features
+- AI/ML usage
+- Technical feasibility
+- Difficulty
+- Estimated build time
+- Judge appeal
+- Scalability
+- Risks
+
+Allow the user to compare ideas.
+
+Use transparent criteria such as:
+
+- Innovation
+- Impact
+- Technical feasibility
+- UX
+- Scalability
+- Demo potential
+- Relevance to the hackathon
+
+Clearly label AI-generated assessments as estimates.
+
+
+11. DIFFERENTIATION ENGINE
+
+For the selected idea, generate:
+
+- Why this is different
+- Existing alternatives
+- Our differentiator
+- Unique workflow
+- Memorable demo moment
+
+Look for meaningful opportunities involving:
+
+- AI agents
+- Automation
+- Personalization
+- Predictive systems
+- Real-time functionality
+- Computer vision
+- NLP
+- Data intelligence
+- IoT
+- Accessibility
+- Sustainability
+- Social impact
+
+Do not add AI just to say "AI-powered."
+
+Every technology must have a clear purpose.
+
+
+12. MVP BUILDER
+
+Divide features into:
+
+MUST HAVE
+
+Essential for the demo.
+
+SHOULD HAVE
+
+Important improvements if time permits.
+
+NICE TO HAVE
+
+Optional improvements.
+
+DO NOT BUILD
+
+Features that consume time without improving the core product.
+
+Allow users to move features between categories.
+
+Show MVP completion percentage.
+
+Prioritize a small but impressive working product over a huge unfinished product.
+
+
+13. TECH STACK ADVISOR
+
+Generate a recommended technology stack.
+
+Frontend options:
+
+- React
+- Next.js
+- HTML/CSS/JavaScript
+- Flutter
+- Other appropriate technologies
+
+Backend options:
+
+- Node.js
+- Express
+- Python
+- FastAPI
+- Firebase
+- Supabase
+
+Database options:
+
+- PostgreSQL
+- Supabase
+- Firebase
+- MongoDB
+
+AI options:
+
+- OpenAI
+- Gemini
+- Claude
+- Open-source models
+- Computer vision
+- Machine learning models
+
+Deployment options:
+
+- Replit
+- Vercel
+- Netlify
+- Render
+- Firebase
+
+Automation options:
+
+- n8n
+- Make
+- APIs
+- Webhooks
+
+Always prefer the simplest suitable technology stack.
+
+Avoid unnecessary infrastructure.
+
+
+14. SYSTEM ARCHITECTURE
+
+Generate a visual architecture diagram.
+
+Example:
+
+USER
+↓
+FRONTEND
+↓
+BACKEND / API
+↓
+AI LAYER
+↓
+DATABASE
+↓
+EXTERNAL APIs
+
+Explain:
+
+- Components
+- Data flow
+- API communication
+- AI processing
+- Database interaction
+- Authentication
+- External services
+
+Use a visual architecture diagram whenever possible.
+
+
+15. BUILD PLAN
+
+Generate a sequential implementation plan.
+
+PHASE 1 — SETUP
+
+- Initialize project
+- Configure environment
+- Install dependencies
+
+PHASE 2 — UI
+
+- Build pages
+- Build components
+- Navigation
+- Responsive layout
+
+PHASE 3 — BACKEND
+
+- API routes
+- Business logic
+- Database
+
+PHASE 4 — AI
+
+- Prompt system
+- Model integration
+- Response processing
+
+PHASE 5 — INTEGRATION
+
+- APIs
+- Automation
+- Authentication
+
+PHASE 6 — TESTING
+
+- Functional testing
+- Error handling
+- Responsive testing
+
+PHASE 7 — DEPLOYMENT
+
+- Environment variables
+- Production build
+- Deployment
+
+PHASE 8 — DEMO
+
+- Sample data
+- Demo workflow
+- Presentation preparation
+
+Never attempt to build everything simultaneously.
+
+
+16. HACKATHON TIMER
+
+Create a live countdown:
+
+Days
+Hours
+Minutes
+Seconds
+
+Adapt recommendations based on remaining time.
+
+MORE THAN 24 HOURS:
+
+Focus on MVP + core features.
+
+12–24 HOURS:
+
+Focus on core workflow + integration.
+
+6–12 HOURS:
+
+Focus on stability + deployment.
+
+2–6 HOURS:
+
+Stop major feature development.
+
+Focus on:
+
+- Bug fixing
+- UI polish
+- Demo
+- Presentation
+
+LESS THAN 2 HOURS:
+
+Freeze development.
+
+Focus on:
+
+- Testing
+- Backup
+- Demo rehearsal
+- Pitch
+
+Warn the user when they are spending time on low-priority features.
+
+
+17. AI CODING MENTOR
+
+Create an AI coding assistant.
+
+It should help with:
+
+- Code generation
+- Debugging
+- Architecture
+- API integration
+- Database design
+- Error diagnosis
+- Refactoring
+- Performance
+- Security
+
+When providing code, include:
+
+1. File name
+2. File location
+3. Required dependencies
+4. Environment variables
+5. Code
+6. Commands to run
+7. Expected result
+8. Verification steps
+
+Never expose API keys.
+
+Use environment variables.
+
+Clearly mark placeholders.
+
+
+18. DEBUGGING MODE
+
+When the user submits an error, analyze:
+
+LIKELY CAUSE
+
+WHY IT HAPPENS
+
+EXACT FIX
+
+REPLACEMENT CODE
+
+VERIFICATION
+
+Keep explanations beginner-friendly.
+
+
+19. AI ARCHITECTURE ADVISOR
+
+Before recommending advanced AI, determine whether the project actually needs:
+
+- LLM
+- RAG
+- Embeddings
+- Vector database
+- Computer vision
+- Speech recognition
+- Text-to-speech
+- Classification
+- Prediction
+- Recommendation system
+- AI agents
+- Function/tool calling
+
+Prefer the simplest architecture that solves the problem.
+
+
+20. VALIDATION MODULE
+
+Create a validation workspace.
+
+Analyze:
+
+- User demand
+- Existing solutions
+- Competitors
+- Technical feasibility
+- Market opportunity
+- Ethical risks
+- Privacy
+- Security
+
+Do not invent:
+
+- Statistics
+- Market sizes
+- Research
+- Competitor capabilities
+- User numbers
+
+If web research is available, clearly distinguish researched information from AI-generated analysis.
+
+
+21. COMPETITOR ANALYSIS
+
+Create a comparison table:
+
+Solution
+Target User
+Main Function
+Strength
+Limitation
+Our Difference
+
+Do not fabricate competitors.
+
+Allow users to add competitors manually.
+
+
+22. RISK ANALYSIS
+
+Identify:
+
+- Technical risks
+- API dependency risks
+- Data risks
+- Security risks
+- Privacy risks
+- AI hallucination risks
+- Deployment risks
+- Time risks
+- Scalability risks
+
+For every risk provide:
+
+Risk
+Impact
+Likelihood
+Mitigation
+
+
+23. UI/UX DESIGN
+
+The application should look like a modern startup SaaS product.
+
+Design style:
+
+- Modern
+- Minimal
+- Professional
+- Student-friendly
+- Premium
+- Fast
+- Responsive
+
+Avoid:
+
+- Excessive gradients
+- Excessive animations
+- Visual clutter
+- Huge text blocks
+- Unnecessary decoration
+
+Use:
+
+- Cards
+- Tabs
+- Progress indicators
+- Timelines
+- Modals
+- Tooltips
+- Empty states
+- Loading states
+- Error states
+- Toast notifications
+
+Make everything responsive for:
+
+- Desktop
+- Tablet
+- Mobile
+
+
+24. VISUAL DASHBOARD
+
+Use meaningful visualizations for:
+
+- Project progress
+- MVP completion
+- Time remaining
+- Development progress
+- Feature completion
+- Demo readiness
+
+Do not add charts that do not provide useful information.
+
+
+25. DEMO STRATEGY GENERATOR
+
+Generate a 2–5 minute demo.
+
+Structure:
+
+0:00–0:20
+Problem hook
+
+0:20–0:45
+Why current solutions are insufficient
+
+0:45–1:00
+Introduce the solution
+
+1:00–3:00
+Live product demonstration
+
+3:00–3:30
+Technology and innovation
+
+3:30–4:00
+Impact and scalability
+
+FINAL
+Strong closing statement
+
+The demo should tell a story rather than simply clicking through features.
+
+
+26. PITCH GENERATOR
+
+Generate:
+
+- 30-second pitch
+- 1-minute pitch
+- 3-minute pitch
+- 5-minute pitch
+
+Use:
+
+PROBLEM
+→ INSIGHT
+→ SOLUTION
+→ INNOVATION
+→ DEMO
+→ IMPACT
+→ FUTURE
+
+Keep the language natural enough for a student to confidently speak.
+
+
+27. PRESENTATION GENERATOR
+
+Generate slide content for:
+
+1. Title
+2. Problem
+3. Target users
+4. Existing gap
+5. Solution
+6. How it works
+7. Key features
+8. Technology
+9. Architecture
+10. Innovation
+11. Impact
+12. Scalability
+13. Future scope
+14. Demo
+15. Closing
+
+For every slide provide:
+
+- Slide title
+- Key points
+- Visual suggestion
+- Speaker notes
+
+Do not overcrowd slides.
+
+
+28. JUDGE SIMULATOR
+
+Create an interactive judge simulation.
+
+Generate questions such as:
+
+- Why is this problem important?
+- Why hasn't someone already solved it?
+- What makes your solution different?
+- Why do you need AI?
+- How accurate is the system?
+- What happens when AI is wrong?
+- How does it scale?
+- What happens if an API fails?
+- How secure is user data?
+- What is your biggest technical limitation?
+- Can this actually be deployed?
+- What did your team build yourselves?
+- What would you build with another month?
+
+Allow the user to answer.
+
+Then provide:
+
+- What was strong
+- What was unclear
+- What information was missing
+- How the answer could be improved
+
+Do not simply praise the user.
+
+
+29. PROJECT EVALUATION
+
+Create an evaluation dashboard.
+
+Evaluate:
+
+- Problem relevance
+- Innovation
+- Technical implementation
+- AI/technology usage
+- UX/UI
+- Impact
+- Scalability
+- Demo quality
+- Presentation
+
+Scores must be clearly labeled as AI-generated estimates, not objective judging results.
+
+Then generate:
+
+BIGGEST STRENGTHS
+
+BIGGEST WEAKNESSES
+
+BIGGEST RISKS
+
+HIGHEST-ROI IMPROVEMENTS
+
+
+30. TEAM COLLABORATION
+
+Allow team members to be added.
+
+Each member should have:
+
+- Name
+- Role
+- Skills
+- Assigned tasks
+
+Example roles:
+
+- Frontend
+- Backend
+- AI/ML
+- UI/UX
+- Research
+- Presentation
+- Project Lead
+
+Create a task board:
+
+TODO
+→ IN PROGRESS
+→ REVIEW
+→ DONE
+
+
+31. TASK MANAGEMENT
+
+Each task should support:
+
+- Title
+- Description
+- Assignee
+- Priority
+- Status
+- Deadline
+- Estimated time
+- Actual time
+
+Priority levels:
+
+- Critical
+- High
+- Medium
+- Low
+
+Allow the AI to recommend task priorities based on remaining hackathon time.
+
+
+32. ZERO-BUDGET MODE
+
+Add a project setting:
+
+ZERO-BUDGET MODE
+
+When enabled, prefer:
+
+- Free tiers
+- Open-source tools
+- Student benefits
+- Free APIs
+- Local models
+- Free deployment
+- Existing datasets
+- No-code/low-code tools
+
+Warn users when a service may require payment or have usage limits.
+
+
+33. PROJECT MEMORY
+
+Maintain project context.
+
+Remember:
+
+- Hackathon details
+- Problem statement
+- Selected idea
+- MVP
+- Tech stack
+- Architecture
+- Team
+- Tasks
+- AI decisions
+- Risks
+- Demo strategy
+- Pitch
+- Deadline
+
+The user should not need to repeatedly explain their project.
+
+
+34. DATABASE
+
+Use a simple scalable database.
+
+Suggested tables:
+
+USERS
+
+- id
+- name
+- email
+- created_at
+
+PROJECTS
+
+- id
+- user_id
+- name
+- description
+- hackathon_name
+- theme
+- problem_statement
+- deadline
+- budget
+- created_at
+
+IDEAS
+
+- id
+- project_id
+- name
+- concept
+- problem
+- innovation
+- features
+- feasibility
+
+FEATURES
+
+- id
+- project_id
+- name
+- priority
+- status
+
+TASKS
+
+- id
+- project_id
+- title
+- description
+- assignee
+- priority
+- status
+- deadline
+
+TEAM_MEMBERS
+
+- id
+- project_id
+- name
+- role
+- skills
+
+AI_SESSIONS
+
+- id
+- project_id
+- type
+- prompt
+- response
+- created_at
+
+
+35. AUTHENTICATION
+
+If practical, implement authentication.
+
+Users should be able to:
+
+- Sign up
+- Log in
+- Log out
+- Access their projects
+- Create multiple projects
+
+Keep authentication simple and secure.
+
+
+36. REPLIT IMPLEMENTATION
+
+Build the application so it works naturally inside Replit.
+
+Use environment variables for secrets.
+
+Create:
+
+.env.example
+
+Example:
+
+DATABASE_URL=
+AI_API_KEY=
+
+Never hardcode secrets.
+
+The application must run using the standard Replit Run workflow.
+
+Provide:
+
+- Setup instructions
+- Dependencies
+- Database setup
+- Environment variables
+- Run command
+- Build command
+
+
+37. ERROR HANDLING
+
+Every API call must have:
+
+- Loading state
+- Success state
+- Error state
+- Retry option
+
+Handle:
+
+- API failure
+- Network failure
+- Invalid input
+- Empty responses
+- Database failure
+- Authentication errors
+- Rate limits
+
+Do not show raw technical errors to normal users.
+
+
+38. PERFORMANCE
+
+Prioritize:
+
+- Fast page loading
+- Lazy loading where useful
+- Efficient API requests
+- Minimal unnecessary database queries
+- Proper state management
+
+Avoid unnecessary dependencies.
+
+
+39. SECURITY
+
+Implement:
+
+- Environment variables for secrets
+- Input validation
+- Authentication checks
+- Authorization
+- Secure database queries
+- API rate limiting where practical
+- No exposed API keys
+- No sensitive information in frontend code
+
+
+40. DEMO DATA
+
+Create realistic sample project data so the application looks useful immediately.
+
+Use a sample project such as:
+
+"AI-powered student emergency assistance platform"
+
+Clearly label all sample information as DEMO DATA.
+
+Allow the user to delete or replace it.
+
+
+41. LANDING PAGE
+
+Create a polished landing page.
+
+Hero title:
+
+BUILD SMARTER. HACK FASTER. PITCH BETTER.
+
+Subtitle:
+
+"Your AI-powered co-pilot for turning hackathon ideas into working products."
+
+Primary CTA:
+
+START A PROJECT
+
+Secondary CTA:
+
+EXPLORE DEMO
+
+Sections:
+
+- How it works
+- Features
+- AI capabilities
+- Hackathon workflow
+- Why Hackathon Mentor
+- Demo preview
+- Final CTA
+
+
+42. GLOBAL AI ASSISTANT
+
+Add an AI assistant accessible throughout the application.
+
+The assistant must understand the current project context.
+
+Example:
+
+User:
+"Can we add computer vision?"
+
+Assistant should:
+
+1. Understand the current architecture.
+2. Determine whether computer vision is actually necessary.
+3. Explain benefits.
+4. Explain complexity.
+5. Consider the deadline.
+6. Recommend an approach.
+7. Ask for confirmation before making major project changes.
+
+The AI must not silently modify major project decisions.
+
+
+43. AI ACTION CONFIRMATION
+
+Before making major changes, request confirmation.
+
+Examples:
+
+- Changing technology stack
+- Removing MVP features
+- Adding major dependencies
+- Changing architecture
+- Creating many tasks
+- Modifying project strategy
+
+Small non-destructive actions can happen automatically.
+
+
+44. DEADLINE-AWARE INTELLIGENCE
+
+The AI must consider:
+
+REMAINING TIME + TEAM SIZE + COMPLEXITY + CURRENT PROGRESS
+
+before making recommendations.
+
+Example:
+
+If the team has 4 hours remaining, do NOT recommend:
+
+- New authentication architecture
+- Complex RAG pipeline
+- Custom ML model
+- Major UI redesign
+
+Instead recommend:
+
+- Fix critical bugs
+- Improve core workflow
+- Prepare demo
+- Deploy
+- Test
+- Prepare pitch
+
+
+45. CRITICAL THINKING ENGINE
+
+When the user proposes a feature, analyze:
+
+1. Does it solve the core problem?
+2. Does it improve the demo?
+3. How long will it take?
+4. Does it introduce new dependencies?
+5. Is it technically necessary?
+6. Does it improve differentiation?
+7. Is it worth the opportunity cost?
+
+Return one of:
+
+KEEP
+MODIFY
+DEFER
+REMOVE
+
+Explain the reasoning.
+
+
+46. DESIGN SYSTEM
+
+Use a consistent design system.
+
+Define:
+
+- Typography
+- Spacing
+- Border radius
+- Shadows
+- Buttons
+- Cards
+- Inputs
+- Modals
+- Badges
+- Tabs
+- Navigation
+- Toasts
+
+Maintain visual consistency throughout the application.
+
+
+47. ACCESSIBILITY
+
+Support:
+
+- Keyboard navigation
+- Semantic HTML
+- Proper labels
+- Good contrast
+- Focus states
+- Screen-reader-friendly controls
+- Responsive design
+
+
+48. DEVELOPMENT STRATEGY
+
+Build incrementally.
+
+PHASE 1
+Landing page
+
+PHASE 2
+Dashboard
+
+PHASE 3
+Project creation
+
+PHASE 4
+Project workspace
+
+PHASE 5
+Problem analysis
+
+PHASE 6
+Idea generation
+
+PHASE 7
+MVP builder
+
+PHASE 8
+Tech stack + architecture
+
+PHASE 9
+Build planner
+
+PHASE 10
+AI assistant
+
+PHASE 11
+Demo + pitch
+
+PHASE 12
+Judge simulator
+
+PHASE 13
+Team/task management
+
+PHASE 14
+Authentication + persistence
+
+PHASE 15
+Polish + testing
+
+
+49. REPLIT AGENT BEHAVIOR
+
+When implementing:
+
+1. Inspect the existing Replit project before changing files.
+2. Reuse existing working code where appropriate.
+3. Do not overwrite working functionality unnecessarily.
+4. Build incrementally.
+5. Run the application after significant changes.
+6. Fix errors before moving to the next phase.
+7. Keep components modular.
+8. Keep API logic separate from UI logic.
+9. Keep secrets in environment variables.
+10. Avoid unnecessary dependencies.
+11. Maintain responsive design.
+12. Test major user flows.
+13. Never claim something works without verifying it.
+
+
+50. FIRST BUILD REQUIREMENT
+
+Start by creating the functional foundation.
+
+Build first:
+
+- Landing page
+- Dashboard
+- Project creation flow
+- Project workspace
+- Navigation
+- Database schema
+- Basic project persistence
+- Responsive design
+- Sample project
+- AI integration architecture
+
+Do NOT attempt advanced AI features until the core application structure works.
+
+
+51. DEFINITION OF DONE
+
+The application is complete when a new user can:
+
+1. Open the application.
+2. Understand its purpose.
+3. Create a hackathon project.
+4. Enter hackathon information.
+5. Analyze a problem.
+6. Generate ideas.
+7. Compare ideas.
+8. Define an MVP.
+9. Generate a tech stack.
+10. View architecture.
+11. Generate a build plan.
+12. Track tasks.
+13. Interact with the AI mentor.
+14. Prepare a demo.
+15. Generate a pitch.
+16. Practice judge questions.
+17. Evaluate the project.
+18. See the countdown.
+19. Save the project.
+20. Return later without losing progress.
+
+
+52. FINAL PRODUCT STANDARD
+
+Do NOT build this as a simple college CRUD application.
+
+Build it as a real SaaS-style AI product.
+
+The experience should feel like:
+
+"An experienced hackathon mentor is working alongside me."
+
+The application must be:
+
+- Fast
+- Useful
+- Intelligent
+- Structured
+- Practical
+- Modern
+- Demo-ready
+- Beginner-friendly
+- Technically credible
+
+Core philosophy:
+
+IDEA → VALIDATE → BUILD → TEST → DEMO → PITCH
+
+Every feature must support this journey.
+
+Before adding any feature, ask:
+
+"Does this make the student's hackathon project more successful?"
+
+If not, do not prioritize it.
+
+
+START NOW
+
+First inspect the existing Replit project and determine its current state.
+
+Then:
+
+1. Set up the application foundation.
+2. Create the core UI.
+3. Create the database structure.
+4. Implement project creation.
+5. Implement the dashboard.
+6. Implement the project workspace.
+7. Make sure the application runs successfully.
+8. Test the main user flow.
+9. Fix all errors.
+10. Only then continue to advanced AI functionality.
+
+Do not stop at a static UI mockup.
+
+Build a FUNCTIONAL application.
+
+Do not create placeholder buttons that do nothing.
+
+If a feature cannot be fully implemented yet, clearly identify it and continue building the highest-priority functional parts.
+
+Prioritize a working MVP over excessive features.
+
+START BUILDING.

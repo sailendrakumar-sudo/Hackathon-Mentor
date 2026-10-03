@@ -10,6 +10,12 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: projects
+    description: Hackathon project workspaces
+  - name: tasks
+    description: Build plan tasks
+  - name: dashboard
+    description: Dashboard summaries and project activity
 paths:
   /healthz:
     get:
@@ -24,6 +30,199 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /dashboard:
+    get:
+      operationId: getDashboard
+      tags: [dashboard]
+      summary: Get dashboard summary
+      responses:
+        "200":
+          description: Summary of projects, tasks, and recent activity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+  /activity:
+    get:
+      operationId: listActivity
+      tags: [dashboard]
+      summary: List recent workspace activity
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 12
+      responses:
+        "200":
+          description: Recent project activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Activity"
+  /projects:
+    get:
+      operationId: listProjects
+      tags: [projects]
+      summary: List hackathon projects
+      responses:
+        "200":
+          description: Projects ordered by recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      operationId: createProject
+      tags: [projects]
+      summary: Create a hackathon project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        "201":
+          description: Project created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+  /projects/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      operationId: getProject
+      tags: [projects]
+      summary: Get a project workspace
+      responses:
+        "200":
+          description: Project details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Project not found
+    patch:
+      operationId: updateProject
+      tags: [projects]
+      summary: Update project details
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectPatch"
+      responses:
+        "200":
+          description: Project updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Project not found
+    delete:
+      operationId: deleteProject
+      tags: [projects]
+      summary: Delete a project and its tasks
+      responses:
+        "204":
+          description: Project deleted
+        "404":
+          description: Project not found
+  /projects/{id}/tasks:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      operationId: listTasks
+      tags: [tasks]
+      summary: List project tasks
+      responses:
+        "200":
+          description: Tasks ordered by priority and creation time
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+        "404":
+          description: Project not found
+    post:
+      operationId: createTask
+      tags: [tasks]
+      summary: Add a task to the build plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskInput"
+      responses:
+        "201":
+          description: Task created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Project not found
+  /tasks/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    patch:
+      operationId: updateTask
+      tags: [tasks]
+      summary: Update a build task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskPatch"
+      responses:
+        "200":
+          description: Task updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Task not found
+    delete:
+      operationId: deleteTask
+      tags: [tasks]
+      summary: Delete a build task
+      responses:
+        "204":
+          description: Task deleted
+        "404":
+          description: Task not found
 components:
   schemas:
     HealthStatus:
@@ -33,4 +232,182 @@ components:
           type: string
       required:
         - status
-
+    Project:
+      type: object
+      required:
+        - id
+        - name
+        - hackathonName
+        - teamSize
+        - teamMembers
+        - requiredTechnologies
+        - technologyRestrictions
+        - hardwareAllowed
+        - apisAllowed
+        - aiEncouraged
+        - prototypeRequired
+        - deploymentRequired
+        - mvpFeatures
+        - techStack
+        - stage
+        - createdAt
+        - updatedAt
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        hackathonName: { type: string }
+        theme: { type: ["string", "null"] }
+        problemStatement: { type: ["string", "null"] }
+        judgingCriteria: { type: array, items: { type: string } }
+        startAt: { type: ["string", "null"], format: date-time }
+        endAt: { type: ["string", "null"], format: date-time }
+        teamSize: { type: integer, minimum: 1, maximum: 20 }
+        teamMembers: { type: array, items: { type: string } }
+        requiredTechnologies: { type: array, items: { type: string } }
+        technologyRestrictions: { type: array, items: { type: string } }
+        hardwareAllowed: { type: boolean }
+        apisAllowed: { type: boolean }
+        aiEncouraged: { type: boolean }
+        prototypeRequired: { type: boolean }
+        deploymentRequired: { type: boolean }
+        budget: { type: ["number", "null"], minimum: 0 }
+        additionalRules: { type: ["string", "null"] }
+        concept: { type: ["string", "null"] }
+        targetUsers: { type: ["string", "null"] }
+        selectedSolution: { type: ["string", "null"] }
+        mvpFeatures: { type: array, items: { type: string } }
+        techStack: { type: array, items: { type: string } }
+        architectureNotes: { type: ["string", "null"] }
+        demoPlan: { type: ["string", "null"] }
+        pitch: { type: ["string", "null"] }
+        stage:
+          type: string
+          enum: [problem, ideas, mvp, build, test, deploy, demo, pitch]
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    ProjectInput:
+      type: object
+      required: [name, hackathonName]
+      properties:
+        name: { type: string, minLength: 1, maxLength: 120 }
+        hackathonName: { type: string, minLength: 1, maxLength: 160 }
+        theme: { type: ["string", "null"], maxLength: 500 }
+        problemStatement: { type: ["string", "null"], maxLength: 5000 }
+        judgingCriteria: { type: array, items: { type: string }, maxItems: 20 }
+        startAt: { type: ["string", "null"], format: date-time }
+        endAt: { type: ["string", "null"], format: date-time }
+        teamSize: { type: integer, minimum: 1, maximum: 20, default: 1 }
+        teamMembers: { type: array, items: { type: string }, maxItems: 20 }
+        requiredTechnologies: { type: array, items: { type: string }, maxItems: 30 }
+        technologyRestrictions: { type: array, items: { type: string }, maxItems: 30 }
+        hardwareAllowed: { type: boolean, default: false }
+        apisAllowed: { type: boolean, default: true }
+        aiEncouraged: { type: boolean, default: false }
+        prototypeRequired: { type: boolean, default: true }
+        deploymentRequired: { type: boolean, default: false }
+        budget: { type: ["number", "null"], minimum: 0 }
+        additionalRules: { type: ["string", "null"], maxLength: 5000 }
+        concept: { type: ["string", "null"], maxLength: 2000 }
+        targetUsers: { type: ["string", "null"], maxLength: 1000 }
+    ProjectPatch:
+      type: object
+      properties:
+        name: { type: string, minLength: 1, maxLength: 120 }
+        hackathonName: { type: string, minLength: 1, maxLength: 160 }
+        theme: { type: ["string", "null"], maxLength: 500 }
+        problemStatement: { type: ["string", "null"], maxLength: 5000 }
+        judgingCriteria: { type: array, items: { type: string }, maxItems: 20 }
+        startAt: { type: ["string", "null"], format: date-time }
+        endAt: { type: ["string", "null"], format: date-time }
+        teamSize: { type: integer, minimum: 1, maximum: 20 }
+        teamMembers: { type: array, items: { type: string }, maxItems: 20 }
+        requiredTechnologies: { type: array, items: { type: string }, maxItems: 30 }
+        technologyRestrictions: { type: array, items: { type: string }, maxItems: 30 }
+        hardwareAllowed: { type: boolean }
+        apisAllowed: { type: boolean }
+        aiEncouraged: { type: boolean }
+        prototypeRequired: { type: boolean }
+        deploymentRequired: { type: boolean }
+        budget: { type: ["number", "null"], minimum: 0 }
+        additionalRules: { type: ["string", "null"], maxLength: 5000 }
+        concept: { type: ["string", "null"], maxLength: 2000 }
+        targetUsers: { type: ["string", "null"], maxLength: 1000 }
+        selectedSolution: { type: ["string", "null"], maxLength: 4000 }
+        mvpFeatures: { type: array, items: { type: string }, maxItems: 30 }
+        techStack: { type: array, items: { type: string }, maxItems: 30 }
+        architectureNotes: { type: ["string", "null"], maxLength: 10000 }
+        demoPlan: { type: ["string", "null"], maxLength: 5000 }
+        pitch: { type: ["string", "null"], maxLength: 10000 }
+        stage:
+          type: string
+          enum: [problem, ideas, mvp, build, test, deploy, demo, pitch]
+    Task:
+      type: object
+      required: [id, projectId, title, status, priority, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        projectId: { type: string, format: uuid }
+        title: { type: string }
+        description: { type: ["string", "null"] }
+        status: { type: string, enum: [backlog, in_progress, done] }
+        priority: { type: string, enum: [low, medium, high] }
+        assignee: { type: ["string", "null"] }
+        dueAt: { type: ["string", "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    TaskInput:
+      type: object
+      required: [title]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 240 }
+        description: { type: ["string", "null"], maxLength: 4000 }
+        status: { type: string, enum: [backlog, in_progress, done], default: backlog }
+        priority: { type: string, enum: [low, medium, high], default: medium }
+        assignee: { type: ["string", "null"], maxLength: 120 }
+        dueAt: { type: ["string", "null"], format: date-time }
+    TaskPatch:
+      type: object
+      properties:
+        title: { type: string, minLength: 1, maxLength: 240 }
+        description: { type: ["string", "null"], maxLength: 4000 }
+        status: { type: string, enum: [backlog, in_progress, done] }
+        priority: { type: string, enum: [low, medium, high] }
+        assignee: { type: ["string", "null"], maxLength: 120 }
+        dueAt: { type: ["string", "null"], format: date-time }
+    Activity:
+      type: object
+      required: [id, projectId, projectName, action, message, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        projectId: { type: string, format: uuid }
+        projectName: { type: string }
+        taskId: { type: ["string", "null"], format: uuid }
+        action: { type: string, enum: [project_created, project_updated, task_created, task_updated, task_completed, task_deleted] }
+        message: { type: string }
+        createdAt: { type: string, format: date-time }
+    DashboardSummary:
+      type: object
+      required: [projectCount, activeProjectCount, tasksOpen, tasksDone, upcomingDeadlines, recentProjects, recentActivity]
+      properties:
+        projectCount: { type: integer }
+        activeProjectCount: { type: integer }
+        tasksOpen: { type: integer }
+        tasksDone: { type: integer }
+        upcomingDeadlines:
+          type: array
+          items:
+            type: object
+            required: [projectId, projectName, endAt, daysRemaining]
+            properties:
+              projectId: { type: string, format: uuid }
+              projectName: { type: string }
+              endAt: { type: string, format: date-time }
+              daysRemaining: { type: integer }
+        recentProjects:
+          type: array
+          items:
+            $ref: "#/components/schemas/Project"
+        recentActivity:
+          type: array
+          items:
+            $ref: "#/components/schemas/Activity"
